@@ -14,7 +14,7 @@ CREATE TABLE authors (
                          lastname varchar(255),
                          fullname varchar(255),
                          short_bio text,
-                         reads int,
+                         reads int DEFAULT 0,
                          socials_id bigint references socials(id)
 );
 
@@ -29,6 +29,7 @@ CREATE TABLE books (
                        short_bio text,
                        volume int,
                        year int,
+                       reads int DEFAULT 0,
                        publisher varchar(255),
                        language varchar(255),
                        isbn10 varchar(255),
@@ -78,3 +79,5 @@ CREATE TABLE book_series (
                              book_id bigint references books(id),
                              series_id bigint references series(id)
 );
+
+CREATE DATABASE e_bookstore_test WITH TEMPLATE e_bookstore;
