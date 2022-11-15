@@ -1,11 +1,9 @@
 package com.anna.e_bookstore.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "socials")
 public class Socials {
   @Id
   @GeneratedValue
