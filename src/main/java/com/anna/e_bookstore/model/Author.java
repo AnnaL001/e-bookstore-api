@@ -3,6 +3,7 @@ package com.anna.e_bookstore.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "authors")
 public class Author {
   @Id
   @GeneratedValue
