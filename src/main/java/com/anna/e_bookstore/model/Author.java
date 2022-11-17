@@ -1,6 +1,7 @@
 package com.anna.e_bookstore.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "authors")
@@ -16,6 +17,12 @@ public class Author {
   @OneToOne
   @JoinColumn(name = "socials_id", referencedColumnName = "id")
   private Socials socials;
+
+  @OneToMany(mappedBy = "author")
+  List<AuthorBook> books;
+
+  @OneToMany(mappedBy = "author")
+  List<AuthorGenres> genres;
 
   public Author() {}
 
@@ -78,5 +85,21 @@ public class Author {
 
   public void setSocials(Socials socials) {
     this.socials = socials;
+  }
+
+  public List<AuthorBook> getBooks() {
+    return books;
+  }
+
+  public void setBooks(List<AuthorBook> books) {
+    this.books = books;
+  }
+
+  public List<AuthorGenres> getGenres() {
+    return genres;
+  }
+
+  public void setGenres(List<AuthorGenres> genres) {
+    this.genres = genres;
   }
 }
