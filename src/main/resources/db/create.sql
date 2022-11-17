@@ -53,31 +53,36 @@ CREATE TABLE series (
 CREATE TABLE author_books (
                               id BIGSERIAL PRIMARY KEY,
                               book_id bigint references books(id),
-                              author_id bigint references authors(id)
+                              author_id bigint references authors(id),
+                              created_at timestamp
 );
 
 CREATE TABLE author_genres (
                                id BIGSERIAL PRIMARY KEY,
                                genre_id bigint references genres(id),
-                               author_id bigint references authors(id)
+                               author_id bigint references authors(id),
+                               created_at timestamp
 );
 
 CREATE TABLE genre_books (
                              id BIGSERIAL PRIMARY KEY,
                              book_id bigint references books(id),
-                             genre_id bigint references genres(id)
+                             genre_id bigint references genres(id),
+                             created_at timestamp
 );
 
 CREATE TABLE author_series (
                                id BIGSERIAL PRIMARY KEY,
                                series_id bigint references series(id),
-                               author_id bigint references authors(id)
+                               author_id bigint references authors(id),
+                               created_at timestamp
 );
 
 CREATE TABLE book_series (
                              id BIGSERIAL PRIMARY KEY,
                              book_id bigint references books(id),
-                             series_id bigint references series(id)
+                             series_id bigint references series(id),
+                             created_at timestamp
 );
 
 CREATE DATABASE e_bookstore_test WITH TEMPLATE e_bookstore;
