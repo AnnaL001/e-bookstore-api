@@ -1,6 +1,7 @@
 package com.anna.e_bookstore.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "books")
@@ -22,6 +23,15 @@ public class Book {
   private FileType fileType;
   @Column(name = "is_stand_alone")
   private boolean isStandAlone;
+
+  @OneToMany(mappedBy = "book")
+  private List<AuthorBook> authors;
+
+  @OneToMany(mappedBy = "book")
+  private List<GenreBooks> genres;
+
+  @OneToOne(mappedBy = "book")
+  private BookSeries bookSeries;
 
   public Book() {
   }
@@ -130,5 +140,34 @@ public class Book {
 
   public void setStandAlone(boolean standAlone) {
     isStandAlone = standAlone;
+  }
+
+  public List<AuthorBook> getAuthors() {
+    return authors;
+  }
+
+  public void setAuthors(List<AuthorBook> authors) {
+    this.authors = authors;
+  }
+
+  public List<GenreBooks> getGenres() {
+    return genres;
+  }
+
+  public void setGenres(List<GenreBooks> genres) {
+    this.genres = genres;
+  }
+
+  public BookSeries getBookSeries() {
+    if (!isStandAlone){
+      return bookSeries;
+    }
+    return new BookSeries();
+  }
+
+  public void setBookSeries(BookSeries bookSeries) {
+    if (!isStandAlone){
+      this.bookSeries = bookSeries;
+    }
   }
 }
