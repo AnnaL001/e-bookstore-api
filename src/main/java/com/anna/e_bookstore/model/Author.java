@@ -24,6 +24,9 @@ public class Author {
   @OneToMany(mappedBy = "author")
   List<AuthorGenres> genres;
 
+  @OneToMany(mappedBy = "author")
+  List<AuthorSeries> series;
+
   public Author() {}
 
   public Author(String firstname, String lastname, String fullname, String short_bio, int reads, Socials socials) {
@@ -101,5 +104,13 @@ public class Author {
 
   public void setGenres(List<AuthorGenres> genres) {
     this.genres = genres;
+  }
+
+  public List<AuthorSeries> getSeries() {
+    return series;
+  }
+
+  public void setSeries(List<AuthorSeries> series) {
+    this.series = series;
   }
 }
