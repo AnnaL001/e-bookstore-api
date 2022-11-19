@@ -10,6 +10,7 @@ CREATE TABLE socials (
 
 CREATE TABLE authors (
                          id BIGSERIAL PRIMARY KEY,
+                         image varchar,
                          firstname varchar(255),
                          lastname varchar(255),
                          fullname varchar(255),
@@ -25,6 +26,7 @@ CREATE TABLE file_types (
 
 CREATE TABLE books (
                        id BIGSERIAL PRIMARY KEY,
+                       image varchar,
                        title varchar(255),
                        short_bio text,
                        volume int,
