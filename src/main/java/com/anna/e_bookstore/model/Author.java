@@ -18,14 +18,13 @@ public class Author {
   @JoinColumn(name = "socials_id", referencedColumnName = "id")
   private Socials socials;
 
-  @OneToMany(mappedBy = "author")
-  List<AuthorBook> books;
-
-  @OneToMany(mappedBy = "author")
-  List<AuthorGenres> genres;
-
-  @OneToMany(mappedBy = "author")
-  List<AuthorSeries> series;
+  @ManyToMany
+  @JoinTable(
+          name = "author_genres",
+          joinColumns = @JoinColumn(name = "author_id"),
+          inverseJoinColumns = @JoinColumn(name = "genre_id")
+  )
+  List<Genre> genres;
 
   public Author() {}
 
@@ -90,27 +89,11 @@ public class Author {
     this.socials = socials;
   }
 
-  public List<AuthorBook> getBooks() {
-    return books;
-  }
-
-  public void setBooks(List<AuthorBook> books) {
-    this.books = books;
-  }
-
-  public List<AuthorGenres> getGenres() {
+  public List<Genre> getGenres() {
     return genres;
   }
 
-  public void setGenres(List<AuthorGenres> genres) {
+  public void setGenres(List<Genre> genres) {
     this.genres = genres;
-  }
-
-  public List<AuthorSeries> getSeries() {
-    return series;
-  }
-
-  public void setSeries(List<AuthorSeries> series) {
-    this.series = series;
   }
 }
