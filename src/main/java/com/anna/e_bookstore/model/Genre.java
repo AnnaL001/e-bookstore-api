@@ -12,12 +12,6 @@ public class Genre {
   private String title;
   private String description;
 
-  @OneToMany(mappedBy = "genre")
-  List<AuthorGenres> authors;
-
-  @OneToMany(mappedBy = "genre")
-  List<GenreBooks> books;
-
   public Genre() {
   }
 
@@ -46,19 +40,4 @@ public class Genre {
     this.description = description;
   }
 
-  public List<AuthorGenres> getAuthors() {
-    return authors;
-  }
-
-  public void setAuthors(List<AuthorGenres> authors) {
-    this.authors = authors;
-  }
-
-  public List<GenreBooks> getBooks() {
-    return books;
-  }
-
-  public void setBooks(List<GenreBooks> books) {
-    this.books = books;
-  }
 }
