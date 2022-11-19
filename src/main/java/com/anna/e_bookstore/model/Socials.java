@@ -11,8 +11,6 @@ public class Socials {
   private String instagram;
   private String facebook;
   private String twitter;
-  @OneToOne(mappedBy = "socials")
-  private Author author;
 
   public Socials() {}
 
@@ -48,13 +46,5 @@ public class Socials {
 
   public void setTwitter(String twitter) {
     this.twitter = twitter;
-  }
-
-  public Author getAuthor() {
-    return author;
-  }
-
-  public void setAuthor(Author author) {
-    this.author = author;
   }
 }
