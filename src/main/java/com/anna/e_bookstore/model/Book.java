@@ -8,7 +8,7 @@ import java.util.List;
 public class Book {
   @Id
   @GeneratedValue
-  private int id;
+  private Long id;
   private String title;
   private String short_bio;
   private int volume;
@@ -24,14 +24,29 @@ public class Book {
   @Column(name = "is_stand_alone")
   private boolean isStandAlone;
 
-  @OneToMany(mappedBy = "book")
-  private List<AuthorBook> authors;
+  @ManyToMany
+  @JoinTable(
+          name = "author_books",
+          joinColumns = @JoinColumn(name = "book_id"),
+          inverseJoinColumns = @JoinColumn(name = "author_id")
+  )
+  private List<Author> authors;
 
-  @OneToMany(mappedBy = "book")
-  private List<GenreBooks> genres;
+  @ManyToMany
+  @JoinTable(
+          name = "genre_books",
+          joinColumns = @JoinColumn(name = "book_id"),
+          inverseJoinColumns = @JoinColumn(name = "genre_id")
+  )
+  private List<Genre> genres;
 
-  @OneToOne(mappedBy = "book")
-  private BookSeries bookSeries;
+  @OneToOne
+  @JoinTable(
+          name = "book_series",
+          joinColumns = @JoinColumn(name = "book_id"),
+          inverseJoinColumns = @JoinColumn(name = "series_id")
+  )
+  private Series series;
 
   public Book() {
   }
@@ -50,7 +65,7 @@ public class Book {
     this.isStandAlone = isStandAlone;
   }
 
-  public int getId() {
+  public Long getId() {
     return id;
   }
 
@@ -142,32 +157,32 @@ public class Book {
     isStandAlone = standAlone;
   }
 
-  public List<AuthorBook> getAuthors() {
+  public List<Author> getAuthors() {
     return authors;
   }
 
-  public void setAuthors(List<AuthorBook> authors) {
+  public void setAuthors(List<Author> authors) {
     this.authors = authors;
   }
 
-  public List<GenreBooks> getGenres() {
+  public List<Genre> getGenres() {
     return genres;
   }
 
-  public void setGenres(List<GenreBooks> genres) {
+  public void setGenres(List<Genre> genres) {
     this.genres = genres;
   }
 
-  public BookSeries getBookSeries() {
+  public Series getBookSeries() {
     if (!isStandAlone){
-      return bookSeries;
+      return series;
     }
-    return new BookSeries();
+    return new Series();
   }
 
-  public void setBookSeries(BookSeries bookSeries) {
+  public void setBookSeries(Series series) {
     if (!isStandAlone){
-      this.bookSeries = bookSeries;
+      this.series = series;
     }
   }
 }
