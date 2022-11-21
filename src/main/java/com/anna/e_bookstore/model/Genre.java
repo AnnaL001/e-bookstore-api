@@ -1,13 +1,12 @@
 package com.anna.e_bookstore.model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "genres")
 public class Genre {
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String title;
   private String description;
