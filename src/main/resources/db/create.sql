@@ -3,9 +3,9 @@ CREATE DATABASE e_bookstore;
 
 CREATE TABLE socials (
                          id BIGSERIAL PRIMARY KEY,
-                         instagram varchar,
-                         facebook varchar,
-                         twitter varchar
+                         instagram varchar UNIQUE,
+                         facebook varchar UNIQUE,
+                         twitter varchar UNIQUE
 );
 
 CREATE TABLE authors (
@@ -34,8 +34,8 @@ CREATE TABLE books (
                        reads int DEFAULT 0,
                        publisher varchar(255),
                        language varchar(255),
-                       isbn10 varchar(255),
-                       isbn13 varchar(255),
+                       isbn10 varchar(255) UNIQUE,
+                       isbn13 varchar(255) UNIQUE,
                        file_size varchar(255),
                        file_type_id bigint references file_types(id),
                        is_stand_alone boolean
