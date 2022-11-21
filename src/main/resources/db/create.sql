@@ -3,9 +3,9 @@ CREATE DATABASE e_bookstore;
 
 CREATE TABLE socials (
                          id BIGSERIAL PRIMARY KEY,
-                         instagram varchar UNIQUE,
-                         facebook varchar UNIQUE,
-                         twitter varchar UNIQUE
+                         instagram varchar DEFAULT 'Instagram account not set',
+                         facebook varchar DEFAULT 'Facebook account not set',
+                         twitter varchar DEFAULT 'Twitter account not set'
 );
 
 CREATE TABLE authors (
@@ -34,8 +34,8 @@ CREATE TABLE books (
                        reads int DEFAULT 0,
                        publisher varchar(255),
                        language varchar(255),
-                       isbn10 varchar(255) UNIQUE,
-                       isbn13 varchar(255) UNIQUE,
+                       isbn10 varchar(10) UNIQUE,
+                       isbn13 varchar(13) UNIQUE,
                        file_size varchar(255),
                        file_type_id bigint references file_types(id),
                        is_stand_alone boolean
@@ -56,35 +56,35 @@ CREATE TABLE author_books (
                               id BIGSERIAL PRIMARY KEY,
                               book_id bigint references books(id),
                               author_id bigint references authors(id),
-                              created_at timestamp
+                              created_at timestamp DEFAULT now()
 );
 
 CREATE TABLE author_genres (
                                id BIGSERIAL PRIMARY KEY,
                                genre_id bigint references genres(id),
                                author_id bigint references authors(id),
-                               created_at timestamp
+                               created_at timestamp DEFAULT now()
 );
 
 CREATE TABLE genre_books (
                              id BIGSERIAL PRIMARY KEY,
                              book_id bigint references books(id),
                              genre_id bigint references genres(id),
-                             created_at timestamp
+                             created_at timestamp DEFAULT now()
 );
 
 CREATE TABLE author_series (
                                id BIGSERIAL PRIMARY KEY,
                                series_id bigint references series(id),
                                author_id bigint references authors(id),
-                               created_at timestamp
+                               created_at timestamp DEFAULT now()
 );
 
 CREATE TABLE book_series (
                              id BIGSERIAL PRIMARY KEY,
                              book_id bigint references books(id),
                              series_id bigint references series(id),
-                             created_at timestamp
+                             created_at timestamp DEFAULT now()
 );
 
 CREATE DATABASE e_bookstore_test WITH TEMPLATE e_bookstore;
