@@ -62,22 +62,6 @@ public class Book {
     this.isbn10 = isbn10;
     this.isbn13 = isbn13;
     this.fileType = fileType;
-    this.isStandAlone = true;
-  }
-
-  public Book(String title, String short_bio, int volume, int year, int reads, String publisher, String language, String isbn10, String isbn13, FileType fileType, Series series) {
-    this.title = title;
-    this.short_bio = short_bio;
-    this.volume = volume;
-    this.year = year;
-    this.reads = reads;
-    this.publisher = publisher;
-    this.language = language;
-    this.isbn10 = isbn10;
-    this.isbn13 = isbn13;
-    this.fileType = fileType;
-    this.isStandAlone = false;
-    this.series = series;
   }
 
   public Long getId() {
@@ -192,7 +176,7 @@ public class Book {
     if (!isStandAlone){
       return series;
     }
-    return new Series();
+    return null;
   }
 
   public void setSeries(Series series) {
