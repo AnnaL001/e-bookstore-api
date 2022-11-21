@@ -15,6 +15,7 @@ public class BookModelAssembler implements RepresentationModelAssembler<Book, En
   public EntityModel<Book> toModel(Book book) {
     return EntityModel.of(book,
             linkTo(methodOn(BookController.class).get(book.getId())).withSelfRel(),
+            linkTo(methodOn(BookController.class).getRelatedBooks(book.getId())).withRel("related"),
             linkTo(methodOn(BookController.class).getAll()).withRel("all_books"));
   }
 }
