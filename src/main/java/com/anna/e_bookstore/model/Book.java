@@ -7,7 +7,7 @@ import java.util.List;
 @Table(name = "books")
 public class Book {
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String title;
   private String short_bio;
@@ -51,7 +51,7 @@ public class Book {
   public Book() {
   }
 
-  public Book(String title, String short_bio, int volume, int year, int reads, String publisher, String language, String isbn10, String isbn13, FileType fileType, boolean isStandAlone) {
+  public Book(String title, String short_bio, int volume, int year, int reads, String publisher, String language, String isbn10, String isbn13, FileType fileType) {
     this.title = title;
     this.short_bio = short_bio;
     this.volume = volume;
@@ -62,7 +62,22 @@ public class Book {
     this.isbn10 = isbn10;
     this.isbn13 = isbn13;
     this.fileType = fileType;
-    this.isStandAlone = isStandAlone;
+    this.isStandAlone = true;
+  }
+
+  public Book(String title, String short_bio, int volume, int year, int reads, String publisher, String language, String isbn10, String isbn13, FileType fileType, Series series) {
+    this.title = title;
+    this.short_bio = short_bio;
+    this.volume = volume;
+    this.year = year;
+    this.reads = reads;
+    this.publisher = publisher;
+    this.language = language;
+    this.isbn10 = isbn10;
+    this.isbn13 = isbn13;
+    this.fileType = fileType;
+    this.isStandAlone = false;
+    this.series = series;
   }
 
   public Long getId() {
@@ -173,14 +188,14 @@ public class Book {
     this.genres = genres;
   }
 
-  public Series getBookSeries() {
+  public Series getSeries() {
     if (!isStandAlone){
       return series;
     }
     return new Series();
   }
 
-  public void setBookSeries(Series series) {
+  public void setSeries(Series series) {
     if (!isStandAlone){
       this.series = series;
     }
