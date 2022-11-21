@@ -3,10 +3,14 @@ package com.anna.e_bookstore.controller;
 import com.anna.e_bookstore.assembler.BookModelAssembler;
 import com.anna.e_bookstore.dto.BookDto;
 import com.anna.e_bookstore.dto.BookDtoConversion;
+import com.anna.e_bookstore.exception.author.AuthorNotFoundException;
 import com.anna.e_bookstore.exception.book.BookNotFoundException;
 import com.anna.e_bookstore.exception.series.SeriesNotFoundException;
+import com.anna.e_bookstore.model.Author;
 import com.anna.e_bookstore.model.Book;
+import com.anna.e_bookstore.model.Genre;
 import com.anna.e_bookstore.model.Series;
+import com.anna.e_bookstore.service.author.AuthorService;
 import com.anna.e_bookstore.service.book.BookService;
 import com.anna.e_bookstore.service.series.SeriesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,7 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,13 +31,15 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class BookController {
   private final BookService bookService;
   private final SeriesService seriesService;
+  private final AuthorService authorService;
   private final BookDtoConversion bookDtoConversion;
   private final BookModelAssembler bookModelAssembler;
 
   @Autowired
-  public BookController(BookService bookService, SeriesService seriesService, BookDtoConversion bookDtoConversion, BookModelAssembler bookModelAssembler){
+  public BookController(BookService bookService, SeriesService seriesService, AuthorService authorService, BookDtoConversion bookDtoConversion, BookModelAssembler bookModelAssembler){
     this.bookService = bookService;
     this.seriesService = seriesService;
+    this.authorService = authorService;
     this.bookDtoConversion = bookDtoConversion;
     this.bookModelAssembler = bookModelAssembler;
   }
@@ -56,17 +63,6 @@ public class BookController {
     }
 
     return bookModelAssembler.toModel(book);
-  }
-
-  @GetMapping("/series/{id}/books")
-  public CollectionModel<EntityModel<Book>> getSeriesBooks(@PathVariable Long id){
-    List<EntityModel<Book>> books = bookService.getSeriesBooks(id).stream()
-            .map(bookModelAssembler::toModel)
-            .collect(Collectors.toList());
-
-    return CollectionModel.of(books,
-            linkTo(methodOn(BookController.class).getSeriesBooks(id)).withSelfRel(),
-            linkTo(methodOn(BookController.class).getAll()).withRel("all_books"));
   }
 
   @PostMapping("/books")
@@ -98,5 +94,68 @@ public class BookController {
             .body(entityModel);
   }
 
+  @GetMapping("/series/{id}/books")
+  public CollectionModel<EntityModel<Book>> getSeriesBooks(@PathVariable Long id){
+    Series series = seriesService.get(id);
+
+    if (series == null){
+      throw new SeriesNotFoundException(id);
+    }
+
+    List<EntityModel<Book>> books = bookService.getSeriesBooks(id).stream()
+            .map(bookModelAssembler::toModel)
+            .collect(Collectors.toList());
+
+    return CollectionModel.of(books,
+            linkTo(methodOn(BookController.class).getSeriesBooks(id)).withSelfRel(),
+            linkTo(methodOn(BookController.class).getAll()).withRel("all_books"));
+  }
+
+  @GetMapping("/authors/{id}/books")
+  public CollectionModel<EntityModel<Book>> getAuthorBooks(@PathVariable Long id){
+    Author author = authorService.get(id);
+
+    if (author == null){
+      throw new AuthorNotFoundException(id);
+    }
+
+    List<EntityModel<Book>> books = bookService.getAuthorBooks(author.getId()).stream()
+            .map(bookModelAssembler::toModel)
+            .collect(Collectors.toList());
+
+    return CollectionModel.of(books,
+            linkTo(methodOn(BookController.class).getAuthorBooks(id)).withSelfRel(),
+            linkTo(methodOn(BookController.class).getAll()).withRel("all_books"));
+  }
+
+  @GetMapping("/books/{id}/related")
+  public CollectionModel<EntityModel<Book>> getRelatedBooks(@PathVariable Long id){
+    Book book = bookService.get(id);
+
+    if (book == null){
+      throw new BookNotFoundException(id);
+    }
+
+    List<EntityModel<Book>> authorBooks = bookService.getAuthorBooks(book.getId()).stream()
+            .map(bookModelAssembler::toModel).toList();
+
+    List<EntityModel<Book>> relatedBooks = new ArrayList<>(authorBooks);
+
+    for (Genre genre: book.getGenres()){
+      List<Book> genreBooks = bookService.getGenreBooks(genre.getId());
+      for (Book genreBook: genreBooks){
+        EntityModel<Book> entityModel = bookModelAssembler.toModel(genreBook);
+        if (!relatedBooks.contains(entityModel)){
+          relatedBooks.add(entityModel);
+        }
+      }
+    }
+
+    relatedBooks.remove(bookModelAssembler.toModel(book));
+
+    return CollectionModel.of(relatedBooks,
+            linkTo(methodOn(BookController.class).getRelatedBooks(id)).withSelfRel(),
+            linkTo(methodOn(BookController.class).getAll()).withRel("all_books"));
+  }
 
 }
