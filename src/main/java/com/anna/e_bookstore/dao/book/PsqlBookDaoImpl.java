@@ -29,6 +29,20 @@ public class PsqlBookDaoImpl implements PsqlBookDao{
   }
 
   @Override
+  public List<Book> getAuthorBooks(Long authorId) {
+    TypedQuery<Book> selectQuery = entityManager.createQuery(
+            "SELECT b FROM Book b JOIN b.authors a WHERE a.id = ?1 ORDER BY b.title", Book.class);
+    return selectQuery.setParameter(1, authorId).getResultList();
+  }
+
+  @Override
+  public List<Book> getGenreBooks(Long genreId) {
+    TypedQuery<Book> selectQuery = entityManager.createQuery(
+            "SELECT b FROM Book b JOIN b.genres g WHERE g.id = ?1 ORDER BY b.title", Book.class);
+    return selectQuery.setParameter(1, genreId).getResultList();
+  }
+
+  @Override
   public Book get(Long bookId) {
     return entityManager.find(Book.class, bookId);
   }

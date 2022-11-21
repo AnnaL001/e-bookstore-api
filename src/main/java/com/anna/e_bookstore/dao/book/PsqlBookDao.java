@@ -7,6 +7,8 @@ import java.util.List;
 public interface PsqlBookDao {
   List<Book> getAll();
   List<Book> getSeriesBooks(Long seriesId);
+  List<Book> getAuthorBooks(Long authorId);
+  List<Book> getGenreBooks(Long genreId);
   Book get(Long bookId);
   void add(Book book);
   void update(Book book);
