@@ -1,1 +1,2 @@
-# e-bookstore-api
+# E-Bookstore-Api
+Still in the development phase.
