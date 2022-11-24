@@ -9,6 +9,7 @@ public class Author {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  private String image;
   private String firstname;
   private String lastname;
   private String fullname;
@@ -39,6 +40,14 @@ public class Author {
 
   public Long getId() {
     return id;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
   }
 
   public String getFirstname() {
