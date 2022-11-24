@@ -1,5 +1,7 @@
 package com.anna.e_bookstore.model;
 
+import jakarta.validation.constraints.*;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -9,15 +11,24 @@ public class Book {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  private String image;
   private String title;
   private String short_bio;
+  @Positive
   private int volume;
+  @Positive
   private int year;
+  @PositiveOrZero
   private int reads;
   private String publisher;
   private String language;
+  @Size(min = 13, max = 13, message = "ISBN 10 requires 10 digits")
   private String isbn10;
+  @Size(min = 13, max = 13, message = "ISBN 13 requires 13 digits")
   private String isbn13;
+  @Min(value = 0, message = "Rating should not be less than five")
+  @Max(value = 5, message="Rating should not be greater than five")
+  private int rating;
   @ManyToOne
   @JoinColumn(name = "file_type_id")
   private FileType fileType;
@@ -66,6 +77,14 @@ public class Book {
 
   public Long getId() {
     return id;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
   }
 
   public String getTitle() {
@@ -140,6 +159,14 @@ public class Book {
     this.isbn13 = isbn13;
   }
 
+  public int getRating() {
+    return rating;
+  }
+
+  public void setRating(int rating) {
+    this.rating = rating;
+  }
+
   public FileType getFileType() {
     return fileType;
   }
@@ -184,4 +211,5 @@ public class Book {
       this.series = series;
     }
   }
+
 }
