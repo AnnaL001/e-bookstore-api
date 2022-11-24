@@ -44,6 +44,11 @@ public class BookController {
     this.bookModelAssembler = bookModelAssembler;
   }
 
+
+  /**
+   * Retrieve list of books
+   * @return CollectionModel<EntityModel<Book>>
+   **/
   @GetMapping("/books")
   public CollectionModel<EntityModel<Book>> getAll(){
     List<EntityModel<Book>> books = bookService.getAll().stream()
@@ -54,6 +59,12 @@ public class BookController {
             linkTo(methodOn(BookController.class).getAll()).withSelfRel());
   }
 
+  /**
+   * Retrieve details of a book
+   * @param id A book's id
+   * @exception BookNotFoundException Thrown when a book with the input id is not found
+   * @return EntityModel<Book>
+   **/
   @GetMapping("/books/{id}")
   public EntityModel<Book> get(@PathVariable Long id){
    Book book = bookService.get(id);
@@ -65,6 +76,10 @@ public class BookController {
     return bookModelAssembler.toModel(book);
   }
 
+  /**
+   * Add standalone book details
+   * @return ResponseEntity<?>
+   **/
   @PostMapping("/books")
   public ResponseEntity<?> addStandAloneBook(@RequestBody BookDto bookDto){
     Book book = bookDtoConversion.convertToModel(bookDto);
@@ -76,6 +91,12 @@ public class BookController {
             .body(entityModel);
   }
 
+  /**
+   * Add series book details
+   * @param id An id of a book series
+   * @exception SeriesNotFoundException Thrown when a book series with the input id is not found
+   * @return ResponseEntity<?>
+   **/
   @PostMapping("/series/{id}/books")
   public ResponseEntity<?> addSeriesBook(@PathVariable Long id, @RequestBody BookDto bookDto){
     Series series = seriesService.get(id);
@@ -94,6 +115,12 @@ public class BookController {
             .body(entityModel);
   }
 
+  /**
+   * Retrieve books within a book series
+   * @param id An id of a book series
+   * @exception SeriesNotFoundException Thrown when a book series with the input id is not found
+   * @return CollectionModel<EntityModel<Author>>
+   **/
   @GetMapping("/series/{id}/books")
   public CollectionModel<EntityModel<Book>> getSeriesBooks(@PathVariable Long id){
     Series series = seriesService.get(id);
@@ -111,6 +138,12 @@ public class BookController {
             linkTo(methodOn(BookController.class).getAll()).withRel("all_books"));
   }
 
+  /**
+   * Retrieve a specific author's books
+   * @param id An id of an author
+   * @exception AuthorNotFoundException Thrown when an author with the input id is not found
+   * @return CollectionModel<EntityModel<Book>>
+   **/
   @GetMapping("/authors/{id}/books")
   public CollectionModel<EntityModel<Book>> getAuthorBooks(@PathVariable Long id){
     Author author = authorService.get(id);
@@ -128,6 +161,12 @@ public class BookController {
             linkTo(methodOn(BookController.class).getAll()).withRel("all_books"));
   }
 
+  /**
+   * Retrieve related books
+   * @param id An id of a book
+   * @exception BookNotFoundException Thrown when a book with the input id is not found
+   * @return CollectionModel<EntityModel<Book>>
+   **/
   @GetMapping("/books/{id}/related")
   public CollectionModel<EntityModel<Book>> getRelatedBooks(@PathVariable Long id){
     Book book = bookService.get(id);

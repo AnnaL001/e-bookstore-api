@@ -28,6 +28,10 @@ public class GenreController {
     this.genreModelAssembler = genreModelAssembler;
   }
 
+  /**
+   * Retrieve a list of genres
+   * @return CollectionModel<EntityModel<Genre>>
+   **/
   @GetMapping("/genres")
   public CollectionModel<EntityModel<Genre>> getAll(){
     List<EntityModel<Genre>> genres = genreService.getAll().stream()
@@ -38,6 +42,12 @@ public class GenreController {
             linkTo(methodOn(GenreController.class).getAll()).withSelfRel());
   }
 
+  /**
+   * Retrieve a specific genre's details
+   * @param id An id of a genre
+   * @exception GenreNotFoundException Thrown when a genre with the input id is not found
+   * @return EntityModel<Genre>
+   **/
   @GetMapping("/genres/{id}")
   public EntityModel<Genre> get(@PathVariable Long id){
     Genre genre = genreService.get(id);

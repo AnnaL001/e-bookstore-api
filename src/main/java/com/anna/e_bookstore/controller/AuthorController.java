@@ -31,6 +31,10 @@ public class AuthorController {
     this.authorModelAssembler = authorModelAssembler;
   }
 
+  /**
+   * Retrieve list of authors
+   * @return CollectionModel<EntityModel<Author>>
+   **/
   @GetMapping("/authors")
   public CollectionModel<EntityModel<Author>> getAll(){
     List<EntityModel<Author>> authors = authorService.getAll().stream()
@@ -41,6 +45,11 @@ public class AuthorController {
             linkTo(methodOn(AuthorController.class).getAll()).withSelfRel());
   }
 
+  /**
+   * Retrieve details of an author
+   * @param id An id of an author
+   * @return EntityModel<Author>
+   **/
   @GetMapping("/authors/{id}")
   public EntityModel<Author> get(@PathVariable Long id){
     Author author = authorService.get(id);
@@ -52,6 +61,10 @@ public class AuthorController {
     return authorModelAssembler.toModel(author);
   }
 
+  /**
+   * Add author details
+   * @return ResponseEntity<?>
+   **/
   @PostMapping("/authors")
   public ResponseEntity<?> add(@RequestBody Author author){
     socialService.add(author.getSocials());

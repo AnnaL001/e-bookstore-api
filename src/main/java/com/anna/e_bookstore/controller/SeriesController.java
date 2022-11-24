@@ -28,6 +28,10 @@ public class SeriesController {
     this.seriesModelAssembler = seriesModelAssembler;
   }
 
+  /**
+   * Retrieve a list of book series
+   * @return CollectionModel<EntityModel<Series>>
+   **/
   @GetMapping("/series")
   public CollectionModel<EntityModel<Series>> getAll(){
     List<EntityModel<Series>> series = seriesService.getAll().stream()
@@ -38,6 +42,12 @@ public class SeriesController {
             linkTo(methodOn(SeriesController.class).getAll()).withSelfRel());
   }
 
+  /**
+   * Retrieve details of a book series
+   * @param id An id of a book series
+   * @exception SeriesNotFoundException Thrown when a book series with the input id is not found
+   * @return EntityModel<Series>
+   **/
   @GetMapping("/series/{id}")
   public EntityModel<Series> get(@PathVariable Long id){
     Series series = seriesService.get(id);
@@ -49,6 +59,10 @@ public class SeriesController {
     return seriesModelAssembler.toModel(series);
   }
 
+  /**
+   * Add a book series
+   * @return ResponseEntity<?>
+   **/
   @PostMapping("/series")
   public ResponseEntity<?> add(@RequestBody Series series){
     seriesService.add(series);
