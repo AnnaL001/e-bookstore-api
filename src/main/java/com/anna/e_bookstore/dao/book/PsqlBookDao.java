@@ -11,5 +11,6 @@ public interface PsqlBookDao {
   List<Book> getGenreBooks(Long genreId);
   Book get(Long bookId);
   void add(Book book);
+  void rate(Book book, int rating);
   void update(Book book);
 }

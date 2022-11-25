@@ -53,6 +53,12 @@ public class PsqlBookDaoImpl implements PsqlBookDao{
   }
 
   @Override
+  public void rate(Book book, int rating) {
+    book.setRatings(rating);
+    entityManager.flush();
+  }
+
+  @Override
   public void update(Book book) {
     // TO DO
   }
