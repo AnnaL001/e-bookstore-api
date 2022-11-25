@@ -43,6 +43,12 @@ public class PsqlBookDaoImpl implements PsqlBookDao{
   }
 
   @Override
+  public List<Book> getPopularBooks(int limit) {
+    String selectQuery = "SELECT b FROM Book b ORDER BY b.reads DESC";
+    return (List<Book>) entityManager.createQuery(selectQuery).setMaxResults(limit).getResultList();
+  }
+
+  @Override
   public Book get(Long bookId) {
     return entityManager.find(Book.class, bookId);
   }

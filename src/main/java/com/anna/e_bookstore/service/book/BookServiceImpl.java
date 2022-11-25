@@ -39,6 +39,11 @@ public class BookServiceImpl implements BookService{
   }
 
   @Override
+  public List<Book> getPopularBooks(int limit) {
+    return bookDao.getPopularBooks(limit);
+  }
+
+  @Override
   public Book get(Long bookId) {
     return bookDao.get(bookId);
   }

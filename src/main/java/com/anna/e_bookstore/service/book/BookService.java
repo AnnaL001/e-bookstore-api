@@ -9,6 +9,7 @@ public interface BookService {
   List<Book> getSeriesBooks(Long seriesId);
   List<Book> getAuthorBooks(Long authorId);
   List<Book> getGenreBooks(Long genreId);
+  List<Book> getPopularBooks(int limit);
   Book get(Long bookId);
   void add(Book book);
   void rate(Book book, int rating);
