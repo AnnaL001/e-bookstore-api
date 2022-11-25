@@ -1,6 +1,7 @@
 package com.anna.e_bookstore.assembler;
 
 import com.anna.e_bookstore.controller.AuthorController;
+import com.anna.e_bookstore.controller.BookController;
 import com.anna.e_bookstore.model.Author;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -15,6 +16,7 @@ public class AuthorModelAssembler implements RepresentationModelAssembler<Author
   public EntityModel<Author> toModel(Author author) {
     return EntityModel.of(author,
             linkTo(methodOn(AuthorController.class).get(author.getId())).withSelfRel(),
+            linkTo(methodOn(BookController.class).getAuthorBooks(author.getId())).withRel("author_books"),
             linkTo(methodOn(AuthorController.class).getAll()).withRel("authors"));
   }
 }
