@@ -37,7 +37,7 @@ CREATE TABLE books (
                        isbn10 varchar(10) UNIQUE,
                        isbn13 varchar(13) UNIQUE,
                        file_size varchar(255),
-                       ratings int,
+                       ratings int DEFAULT 0,
                        file_type_id bigint references file_types(id),
                        is_stand_alone boolean
 );
