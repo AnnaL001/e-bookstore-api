@@ -5,6 +5,7 @@ import com.anna.e_bookstore.dto.BookDto;
 import com.anna.e_bookstore.dto.BookDtoConversion;
 import com.anna.e_bookstore.exception.author.AuthorNotFoundException;
 import com.anna.e_bookstore.exception.book.BookNotFoundException;
+import com.anna.e_bookstore.exception.genre.GenreNotFoundException;
 import com.anna.e_bookstore.exception.series.SeriesNotFoundException;
 import com.anna.e_bookstore.model.Author;
 import com.anna.e_bookstore.model.Book;
@@ -12,6 +13,7 @@ import com.anna.e_bookstore.model.Genre;
 import com.anna.e_bookstore.model.Series;
 import com.anna.e_bookstore.service.author.AuthorService;
 import com.anna.e_bookstore.service.book.BookService;
+import com.anna.e_bookstore.service.genre.GenreService;
 import com.anna.e_bookstore.service.series.SeriesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -32,14 +34,16 @@ public class BookController {
   private final BookService bookService;
   private final SeriesService seriesService;
   private final AuthorService authorService;
+  private final GenreService genreService;
   private final BookDtoConversion bookDtoConversion;
   private final BookModelAssembler bookModelAssembler;
 
   @Autowired
-  public BookController(BookService bookService, SeriesService seriesService, AuthorService authorService, BookDtoConversion bookDtoConversion, BookModelAssembler bookModelAssembler){
+  public BookController(BookService bookService, SeriesService seriesService, AuthorService authorService, GenreService genreService, BookDtoConversion bookDtoConversion, BookModelAssembler bookModelAssembler){
     this.bookService = bookService;
     this.seriesService = seriesService;
     this.authorService = authorService;
+    this.genreService = genreService;
     this.bookDtoConversion = bookDtoConversion;
     this.bookModelAssembler = bookModelAssembler;
   }
@@ -158,6 +162,23 @@ public class BookController {
 
     return CollectionModel.of(books,
             linkTo(methodOn(BookController.class).getAuthorBooks(id)).withSelfRel(),
+            linkTo(methodOn(BookController.class).getAll()).withRel("all_books"));
+  }
+
+  @GetMapping("/genres/{id}/books")
+  public CollectionModel<EntityModel<Book>> getGenreBooks(@PathVariable Long id){
+    Genre genre = genreService.get(id);
+
+    if (genre == null){
+      throw new GenreNotFoundException(id);
+    }
+
+    List<EntityModel<Book>> books = bookService.getGenreBooks(genre.getId()).stream()
+            .map(bookModelAssembler::toModel)
+            .collect(Collectors.toList());
+
+    return CollectionModel.of(books,
+            linkTo(methodOn(BookController.class).getGenreBooks(id)).withSelfRel(),
             linkTo(methodOn(BookController.class).getAll()).withRel("all_books"));
   }
 
