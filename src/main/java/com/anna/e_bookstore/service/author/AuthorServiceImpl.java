@@ -29,6 +29,11 @@ public class AuthorServiceImpl implements AuthorService{
   }
 
   @Override
+  public List<Author> getPopularAuthors(int limit) {
+    return authorDao.getPopularAuthors(limit);
+  }
+
+  @Override
   public void add(Author author) {
     authorDao.add(author);
   }

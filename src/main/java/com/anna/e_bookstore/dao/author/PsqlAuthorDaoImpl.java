@@ -26,6 +26,12 @@ public class PsqlAuthorDaoImpl implements PsqlAuthorDao{
   }
 
   @Override
+  public List<Author> getPopularAuthors(int limit) {
+    String selectQuery = "SELECT a FROM Author a ORDER BY a.reads DESC";
+    return (List<Author>) entityManager.createQuery(selectQuery).setMaxResults(limit).getResultList();
+  }
+
+  @Override
   public void add(Author author) {
     entityManager.persist(author);
   }
