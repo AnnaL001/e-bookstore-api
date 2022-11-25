@@ -197,4 +197,20 @@ public class BookController {
             linkTo(methodOn(BookController.class).getAll()).withRel("all_books"));
   }
 
+  @PutMapping("/books/{id}/rating")
+  public ResponseEntity<?> rate(@PathVariable Long id, @RequestParam int rating){
+    Book book = bookService.get(id);
+
+    if (book == null){
+      throw new BookNotFoundException(id);
+    }
+
+    bookService.rate(book, rating);
+
+    EntityModel<Book> entityModel = bookModelAssembler.toModel(bookService.get(book.getId()));
+
+    return ResponseEntity
+            .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+            .body(entityModel);
+  }
 }
