@@ -218,6 +218,17 @@ public class BookController {
             linkTo(methodOn(BookController.class).getAll()).withRel("all_books"));
   }
 
+  @GetMapping("/popular-books")
+  public CollectionModel<EntityModel<Book>> getPopularBooks(@RequestParam int limit){
+    List<EntityModel<Book>> books = bookService.getPopularBooks(limit).stream()
+            .map(bookModelAssembler::toModel)
+            .collect(Collectors.toList());
+
+    return CollectionModel.of(books,
+            linkTo(methodOn(BookController.class).getPopularBooks(limit)).withSelfRel(),
+            linkTo(methodOn(BookController.class).getAll()).withRel("all_books"));
+  }
+
   @PutMapping("/books/{id}/rating")
   public ResponseEntity<?> rate(@PathVariable Long id, @RequestParam int rating){
     Book book = bookService.get(id);
