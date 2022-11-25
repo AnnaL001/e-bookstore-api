@@ -188,7 +188,7 @@ public class BookController {
    * @exception BookNotFoundException Thrown when a book with the input id is not found
    * @return CollectionModel<EntityModel<Book>>
    **/
-  @GetMapping("/books/{id}/related")
+  @GetMapping("/books/{id}/related-books")
   public CollectionModel<EntityModel<Book>> getRelatedBooks(@PathVariable Long id){
     Book book = bookService.get(id);
 
