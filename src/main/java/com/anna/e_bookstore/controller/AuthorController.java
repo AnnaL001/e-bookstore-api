@@ -61,6 +61,17 @@ public class AuthorController {
     return authorModelAssembler.toModel(author);
   }
 
+  @GetMapping("/popular-authors")
+  public CollectionModel<EntityModel<Author>> getPopularAuthors(@RequestParam int limit){
+    List<EntityModel<Author>> authors = authorService.getPopularAuthors(limit).stream()
+            .map(authorModelAssembler::toModel)
+            .collect(Collectors.toList());
+
+    return CollectionModel.of(authors,
+            linkTo(methodOn(AuthorController.class).getPopularAuthors(limit)).withSelfRel(),
+            linkTo(methodOn(AuthorController.class).getAll()).withRel("all_authors"));
+  }
+
   /**
    * Add author details
    * @return ResponseEntity<?>
