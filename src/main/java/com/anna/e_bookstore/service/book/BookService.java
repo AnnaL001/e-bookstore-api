@@ -11,4 +11,5 @@ public interface BookService {
   List<Book> getGenreBooks(Long genreId);
   Book get(Long bookId);
   void add(Book book);
+  void rate(Book book, int rating);
 }

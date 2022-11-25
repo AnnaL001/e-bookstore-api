@@ -47,4 +47,9 @@ public class BookServiceImpl implements BookService{
   public void add(Book book) {
     bookDao.add(book);
   }
+
+  @Override
+  public void rate(Book book, int rating) {
+    bookDao.rate(book,rating);
+  }
 }
