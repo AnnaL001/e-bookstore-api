@@ -1,8 +1,9 @@
 package com.anna.e_bookstore.model;
 
-import jakarta.validation.constraints.*;
+
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Entity
@@ -28,7 +29,7 @@ public class Book {
   private String isbn13;
   @Min(value = 0, message = "Rating should not be less than five")
   @Max(value = 5, message="Rating should not be greater than five")
-  private int rating;
+  private int ratings;
   @ManyToOne
   @JoinColumn(name = "file_type_id")
   private FileType fileType;
@@ -72,6 +73,7 @@ public class Book {
     this.language = language;
     this.isbn10 = isbn10;
     this.isbn13 = isbn13;
+    this.ratings = 0;
     this.fileType = fileType;
   }
 
@@ -159,12 +161,12 @@ public class Book {
     this.isbn13 = isbn13;
   }
 
-  public int getRating() {
-    return rating;
+  public int getRatings() {
+    return ratings;
   }
 
-  public void setRating(int rating) {
-    this.rating = rating;
+  public void setRatings(int ratings) {
+    this.ratings = ratings;
   }
 
   public FileType getFileType() {
